@@ -1,22 +1,27 @@
-/**
-    @author:huchao
-    @data:2022/2/21
-    @note: 限流中间件
-**/
+/*
+*
+
+	@author:ExiaYe
+	@data:2024/4/21
+	@note: 限流中间件
+
+*
+*/
 package middlewares
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 限流中间件
- * @Date 11:56 2022/2/21
- **/				 // 创建指定填充速率和容量大小的令牌桶
+ * @Date 11:56 2024/4/21
+ **/ // 创建指定填充速率和容量大小的令牌桶
 func RateLimitMiddleware(fillInterval time.Duration, cap int64) func(c *gin.Context) {
 	bucket := ratelimit.NewBucket(fillInterval, cap)
 	return func(c *gin.Context) {

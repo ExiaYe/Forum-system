@@ -11,9 +11,9 @@ import (
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 创建帖子
- * @Date 19:53 2022/2/12
+ * @Date 19:53 2024/4/12
  **/
 func CreatePost(post *models.Post) (err error) {
 	// 1、 生成post_id(生成帖子ID)
@@ -48,9 +48,9 @@ func CreatePost(post *models.Post) (err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据Id查询帖子详情
- * @Date 21:39 2022/2/12
+ * @Date 21:39 2024/4/12
  **/
 func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	// 查询并组合我们接口想用的数据
@@ -58,7 +58,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	post, err := mysql.GetPostByID(postID)
 	if err != nil {
 		zap.L().Error("mysql.GetPostByID(postID) failed",
-			zap.Int64("postID",postID),
+			zap.Int64("postID", postID),
 			zap.Error(err))
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	user, err := mysql.GetUserByID(post.AuthorId)
 	if err != nil {
 		zap.L().Error("mysql.GetUserByID() failed",
-			zap.Uint64("postID",post.AuthorId),
+			zap.Uint64("postID", post.AuthorId),
 			zap.Error(err))
 		return
 	}
@@ -74,7 +74,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	community, err := mysql.GetCommunityByID(post.CommunityID)
 	if err != nil {
 		zap.L().Error("mysql.GetCommunityByID() failed",
-			zap.Uint64("community_id",post.CommunityID),
+			zap.Uint64("community_id", post.CommunityID),
 			zap.Error(err))
 		return
 	}
@@ -88,9 +88,9 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 获取帖子列表
- * @Date 22:56 2022/2/12
+ * @Date 22:56 2024/4/12
  **/
 func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 	postList, err := mysql.GetPostList(page, size)
@@ -98,13 +98,13 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 		fmt.Println(err)
 		return
 	}
-	data = make([]*models.ApiPostDetail, 0, len(postList))	// data 初始化
+	data = make([]*models.ApiPostDetail, 0, len(postList)) // data 初始化
 	for _, post := range postList {
 		// 根据作者id查询作者信息
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -112,7 +112,7 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
@@ -122,15 +122,15 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 升级版帖子列表接口：按创建时间排序 或者 按照 分数排序
- * @Date 22:03 2022/2/15
+ * @Date 22:03 2024/4/15
  **/
 func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 2、去redis查询id列表
@@ -161,7 +161,7 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -169,26 +169,26 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
 		// 接口数据拼接
 		postdetail := &models.ApiPostDetail{
-			VoteNum: voteData[idx],
+			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO  根据社区去查询帖子列表
- * @Date 22:53 2022/2/16
+ * @Date 22:53 2024/4/16
  **/
 func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 2、去redis查询id列表
@@ -219,7 +219,7 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -227,26 +227,26 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
 		// 接口数据拼接
 		postdetail := &models.ApiPostDetail{
-			VoteNum: voteData[idx],
+			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 将两个查询帖子列表逻辑合二为一的函数
- * @Date 12:08 2022/2/17
+ * @Date 12:08 2024/4/17
  **/
 func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 根据请求参数的不同,执行不同的业务逻辑
@@ -258,7 +258,7 @@ func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		data, err = GetCommunityPostList(p)
 	}
 	if err != nil {
-		zap.L().Error("GetPostListNew failed",zap.Error(err))
+		zap.L().Error("GetPostListNew failed", zap.Error(err))
 		return nil, err
 	}
 	return

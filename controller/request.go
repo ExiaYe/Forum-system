@@ -2,8 +2,9 @@ package controller
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -15,9 +16,9 @@ var (
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 获取当前登录用户ID
- * @Date 10:41 2022/2/11
+ * @Date 10:41 2024/4/11
  **/
 // getCurrentUserID 获取当前登录用户ID
 // @Summary 获取当前登录用户ID
@@ -44,9 +45,9 @@ func getCurrentUserID(c *gin.Context) (userID uint64, err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 分页参数
- * @Date 23:41 2022/2/12
+ * @Date 23:41 2024/4/12
  **/
 // getPageInfo 分页参数
 // @Summary 分页参数
@@ -57,14 +58,14 @@ func getCurrentUserID(c *gin.Context) (userID uint64, err error) {
 // @Param Authorization header string true "Bearer 用户令牌"
 // @Security ApiKeyAuth
 // @Success 200 {object} _ResponsePostList
-func getPageInfo(c *gin.Context) (int64, int64)  {
+func getPageInfo(c *gin.Context) (int64, int64) {
 	pageStr := c.Query("page")
 	SizeStr := c.Query("size")
 
 	var (
-		page int64		// 第几页 页数
-		size int64	    // 每页几条数据
-		err error
+		page int64 // 第几页 页数
+		size int64 // 每页几条数据
+		err  error
 	)
 	page, err = strconv.ParseInt(pageStr, 10, 64)
 	if err != nil {

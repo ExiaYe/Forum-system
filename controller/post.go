@@ -11,9 +11,9 @@ import (
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 创建帖子
- * @Date 17:40 2022/2/12
+ * @Date 17:40 2024/4/12
  **/
 // CreatePostHandler 创建帖子
 // @Summary 创建帖子
@@ -29,8 +29,8 @@ import (
 func CreatePostHandler(c *gin.Context) {
 	// 1、获取参数及校验参数
 	var post models.Post
-	if err := c.ShouldBindJSON(&post); err != nil {   // validator --> binding tag
-		zap.L().Debug("c.ShouldBindJSON(post) err",zap.Any("err",err))
+	if err := c.ShouldBindJSON(&post); err != nil { // validator --> binding tag
+		zap.L().Debug("c.ShouldBindJSON(post) err", zap.Any("err", err))
 		zap.L().Error("create post with invalid parm")
 		ResponseErrorWithMsg(c, CodeInvalidParams, err.Error())
 		return
@@ -73,9 +73,9 @@ func CreatePostHandler(c *gin.Context) {
 //}
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 分页获取帖子列表
- * @Date 22:55 2022/2/12
+ * @Date 22:55 2024/4/12
  **/
 // PostListHandler 分页获取帖子列表
 // @Summary 分页获取帖子列表
@@ -89,9 +89,9 @@ func CreatePostHandler(c *gin.Context) {
 // @Router /posts [GET]
 func PostListHandler(c *gin.Context) {
 	// 获取分页参数
-	page,size := getPageInfo(c)
+	page, size := getPageInfo(c)
 	// 获取数据
-	data, err := logic.GetPostList(page,size)
+	data, err := logic.GetPostList(page, size)
 	if err != nil {
 		ResponseError(c, CodeServerBusy)
 		return
@@ -100,9 +100,9 @@ func PostListHandler(c *gin.Context) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 升级版帖子列表接口：按创建时间排序 或者 按照 分数排序
- * @Date 21:34 2022/2/15
+ * @Date 21:34 2024/4/15
  **/
 // 根据前端传来的参数动态的获取帖子列表
 // 按创建时间排序 或者 按照 分数排序
@@ -120,24 +120,24 @@ func PostListHandler(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Success 200 {object} _ResponsePostList
 // @Router /posts2 [get]
-func PostList2Handler(c *gin.Context)  {
+func PostList2Handler(c *gin.Context) {
 	// GET请求参数(query string)： /api/v1/posts2?page=1&size=10&order=time
 	// 获取分页参数
 	p := &models.ParamPostList{
-		Page: 1,
-		Size: 10,
-		Order: models.OrderTime,	// magic string
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime, // magic string
 	}
 	//c.ShouldBind() 根据请求的数据类型选择相应的方法去获取数据
 	//c.ShouldBindJSON() 如果请求中携带的是json格式的数据，才能用这个方法获取到数据
 	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("PostList2Handler with invalid params",zap.Error(err))
+		zap.L().Error("PostList2Handler with invalid params", zap.Error(err))
 		ResponseError(c, CodeInvalidParams)
 		return
 	}
 
 	// 获取数据
-	data, err := logic.GetPostListNew(p)	// 更新：合二为一
+	data, err := logic.GetPostListNew(p) // 更新：合二为一
 	if err != nil {
 		ResponseError(c, CodeServerBusy)
 		return
@@ -146,9 +146,9 @@ func PostList2Handler(c *gin.Context)  {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据Id查询帖子详情
- * @Date 17:44 2022/2/12
+ * @Date 17:44 2024/4/12
  **/
 // PostDetailHandler 根据Id查询帖子详情
 // @Summary 升级版帖子列表接口
@@ -164,17 +164,17 @@ func PostList2Handler(c *gin.Context)  {
 func PostDetailHandler(c *gin.Context) {
 	// 1、获取参数(从URL中获取帖子的id)
 	postIdStr := c.Param("id")
-	postId,err := strconv.ParseInt(postIdStr,10,64)
+	postId, err := strconv.ParseInt(postIdStr, 10, 64)
 	if err != nil {
-		zap.L().Error("get post detail with invalid param",zap.Error(err))
-		ResponseError(c,CodeInvalidParams)
+		zap.L().Error("get post detail with invalid param", zap.Error(err))
+		ResponseError(c, CodeInvalidParams)
 	}
 
 	// 2、根据id取出id帖子数据(查数据库)
 	post, err := logic.GetPostById(postId)
 	if err != nil {
 		zap.L().Error("logic.GetPost(postID) failed", zap.Error(err))
-		ResponseError(c,CodeServerBusy)
+		ResponseError(c, CodeServerBusy)
 	}
 
 	// 3、返回响应
@@ -182,11 +182,11 @@ func PostDetailHandler(c *gin.Context) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据社区去查询帖子列表
- * @Date 22:44 2022/2/16
+ * @Date 22:44 2024/4/16
  **/
-func GetCommunityPostListHandler(c *gin.Context)  {
+func GetCommunityPostListHandler(c *gin.Context) {
 	// GET请求参数(query string)： /api/v1/posts2?page=1&size=10&order=time
 	// 获取分页参数
 	p := &models.ParamPostList{
@@ -198,7 +198,7 @@ func GetCommunityPostListHandler(c *gin.Context)  {
 	//c.ShouldBind() 根据请求的数据类型选择相应的方法去获取数据
 	//c.ShouldBindJSON() 如果请求中携带的是json格式的数据，才能用这个方法获取到数据
 	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("GetCommunityPostListHandler with invalid params",zap.Error(err))
+		zap.L().Error("GetCommunityPostListHandler with invalid params", zap.Error(err))
 		ResponseError(c, CodeInvalidParams)
 		return
 	}

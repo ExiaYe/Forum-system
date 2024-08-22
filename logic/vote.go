@@ -1,15 +1,20 @@
-/**
-    @author:huchao
-    @data:2022/2/14
-    @note: 投票
-**/
+/*
+*
+
+	@author:ExiaYe
+	@data:2024/4/14
+	@note: 投票
+
+*
+*/
 package logic
 
 import (
 	"bluebell_backend/dao/redis"
 	"bluebell_backend/models"
-	"go.uber.org/zap"
 	"strconv"
+
+	"go.uber.org/zap"
 )
 
 // 1、用户投票的数据
@@ -43,14 +48,14 @@ v=-1时，有两种情况
 */
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 投票功能
- * @Date 11:35 2022/2/14
+ * @Date 11:35 2024/4/14
  **/
-func VoteForPost(userId uint64,p *models.VoteDataForm) error {
+func VoteForPost(userId uint64, p *models.VoteDataForm) error {
 	zap.L().Debug("VoteForPost",
-		zap.Uint64("userId",userId),
+		zap.Uint64("userId", userId),
 		zap.String("postId", p.PostID),
-		zap.Int8("Direction",p.Direction))
+		zap.Int8("Direction", p.Direction))
 	return redis.VoteForPost(strconv.Itoa(int(userId)), p.PostID, float64(p.Direction))
 }

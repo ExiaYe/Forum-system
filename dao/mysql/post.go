@@ -11,9 +11,9 @@ import (
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 创建帖子
- * @Date 19:53 2022/2/12
+ * @Date 19:53 2024/4/12
  **/
 // CreatePost 创建帖子
 func CreatePost(post *models.Post) (err error) {
@@ -31,9 +31,9 @@ func CreatePost(post *models.Post) (err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据Id查询帖子详情
- * @Date 21:53 2022/2/12
+ * @Date 21:53 2024/4/12
  **/
 func GetPostByID(pid int64) (post *models.Post, err error) {
 	post = new(models.Post)
@@ -54,9 +54,9 @@ func GetPostByID(pid int64) (post *models.Post, err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据给定的id列表查询帖子数据
- * @Date 22:55 2022/2/15
+ * @Date 22:55 2024/4/15
  **/
 func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 	sqlStr := `select post_id, title, content, author_id, community_id, create_time
@@ -75,9 +75,9 @@ func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 获取帖子列表
- * @Date 22:58 2022/2/12
+ * @Date 22:58 2024/4/12
  **/
 func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	sqlStr := `select post_id, title, content, author_id, community_id, create_time
@@ -86,8 +86,8 @@ func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	DESC 
 	limit ?,?
 	`
-	posts = make([]*models.Post, 0, 2)	// 0：长度  2：容量
-	err = db.Select(&posts, sqlStr,(page-1)*size,size)
+	posts = make([]*models.Post, 0, 2) // 0：长度  2：容量
+	err = db.Select(&posts, sqlStr, (page-1)*size, size)
 	return
 
 }

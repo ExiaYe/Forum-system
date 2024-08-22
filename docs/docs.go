@@ -12,7 +12,7 @@ const docTemplate_swagger = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "author：@huchao",
+            "name": "author：@ExiaYe",
             "url": "http://www.swagger.io/support",
             "email": "support@swagger.io"
         },

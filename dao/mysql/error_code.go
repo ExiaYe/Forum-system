@@ -3,9 +3,9 @@ package mysql
 import "errors"
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 定义业务状态
- * @Date 21:59 2022/2/10
+ * @Date 21:59 2024/4/10
  **/
 var (
 	ErrorUserExit      = errors.New("用户已存在")

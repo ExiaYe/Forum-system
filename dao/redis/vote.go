@@ -10,7 +10,7 @@ import (
 
 const (
 	OneWeekInSeconds         = 7 * 24 * 3600
-	VoteScore        float64 = 432	// 每一票的值432分
+	VoteScore        float64 = 432 // 每一票的值432分
 	PostPerAge               = 20
 )
 
@@ -20,24 +20,32 @@ const (
 投一票就加432分 86400/200 -> 200张赞成票就可以给帖子在首页续天  -> 《redis实战》
 */
 
-/* PostVote 为帖子投票
+/*
+	PostVote 为帖子投票
+
 投票分为四种情况：1.投赞成票 2.投反对票 3.取消投票 4.反转投票
 
 记录文章参与投票的人
 更新文章分数：赞成票要加分；反对票减分
 
 v=1时，有两种情况
+
 	1.之前没投过票，现在要投赞成票		 --> 更新分数和投票记录	差值的绝对值：1	+432
 	2.之前投过反对票，现在要改为赞成票	 --> 更新分数和投票记录	差值的绝对值：2	+432*2
+
 v=0时，有两种情况
+
 	1.之前投过反对票，现在要取消			 --> 更新分数和投票记录	差值的绝对值：1	+432
 	2.之前投过赞成票，现在要取消			 --> 更新分数和投票记录	差值的绝对值：1	-432
+
 v=-1时，有两种情况
+
 	1.之前没投过票，现在要投反对票		 --> 更新分数和投票记录	差值的绝对值：1	-432
 	2.之前投过赞成票，现在要改为反对票	 --> 更新分数和投票记录	差值的绝对值：2	-432*2
 
 投票的限制：
 每个帖子子发表之日起一个星期之内允许用户投票，超过一个星期就不允许投票了
+
 	1、到期之后将redis中保存的赞成票数及反对票数存储到mysql表中
 	2、到期之后删除那个 KeyPostVotedZSetPrefix
 */
@@ -45,7 +53,7 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 	// 1.判断投票限制
 	// 去redis取帖子发布时间
 	postTime := client.ZScore(KeyPostTimeZSet, postID).Val()
-	if float64(time.Now().Unix())-postTime > OneWeekInSeconds {		// Unix()时间戳
+	if float64(time.Now().Unix())-postTime > OneWeekInSeconds { // Unix()时间戳
 		// 不允许投票了
 		return ErrorVoteTimeExpire
 	}
@@ -62,21 +70,21 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 	var op float64
 	if v > ov {
 		op = 1
-	}else {
+	} else {
 		op = -1
 	}
-	diffAbs := math.Abs(ov - v)		// 计算两次投票的差值
-	pipeline := client.TxPipeline()	// 事务操作
+	diffAbs := math.Abs(ov - v)                                                        // 计算两次投票的差值
+	pipeline := client.TxPipeline()                                                    // 事务操作
 	_, err = pipeline.ZIncrBy(KeyPostScoreZSet, VoteScore*diffAbs*op, postID).Result() // 更新分数
 	if ErrorVoteTimeExpire != nil {
 		return err
 	}
 	// 3、记录用户为该帖子投票的数据
-	if v ==0 {
+	if v == 0 {
 		_, err = client.ZRem(key, postID).Result()
 	} else {
 		pipeline.ZAdd(key, redis.Z{ // 记录已投票
-			Score:  v,		// 赞成票还是反对票
+			Score:  v, // 赞成票还是反对票
 			Member: userID,
 		})
 	}
@@ -102,9 +110,9 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO redis存储帖子信息
- * @Date 17:08 2022/2/14
+ * @Date 17:08 2024/4/14
  **/
 // CreatePost 使用hash存储帖子信息
 func CreatePost(postID, userID uint64, title, summary string, CommunityID uint64) (err error) {

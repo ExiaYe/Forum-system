@@ -3,6 +3,7 @@ module bluebell_backend
 go 1.14
 
 require (
+	github.com/adeven/go-wrk v0.0.0-20200418124433-63e11dd31fef // indirect
 	github.com/bytedance/sonic v1.11.9 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.5.1

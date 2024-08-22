@@ -1,9 +1,9 @@
 package controller
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 定义业务状态码
- * @Date 22:11 2022/2/10
+ * @Date 22:11 2024/4/10
  **/
 
 type MyCode int64

@@ -1,8 +1,12 @@
-/**
-    @author:Huchao
-    @data:2022/2/19
-    @note: mysql/post 测试
-**/
+/*
+*
+
+	@author:ExiaYe
+	@data:2024/4/19
+	@note: mysql/post 测试
+
+*
+*/
 package mysql
 
 import (
@@ -12,7 +16,7 @@ import (
 	"time"
 )
 
-func init()  {
+func init() {
 	dbCfg := settings.MySQLConfig{
 		Host:         "127.0.0.1",
 		User:         "root",
@@ -40,7 +44,7 @@ func TestCreatePost(t *testing.T) {
 	}
 	err := CreatePost(&post)
 	if err != nil {
-		t.Fatalf("CreatePost insert record into mysql failed, err:%v\n",err)
+		t.Fatalf("CreatePost insert record into mysql failed, err:%v\n", err)
 	}
 	t.Logf("CreatePost insert record into mysql success")
 }

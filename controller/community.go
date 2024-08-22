@@ -11,9 +11,9 @@ import (
 // 社区
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 查找社区列表
- * @Date 16:28 2022/2/12
+ * @Date 16:28 2024/4/12
  **/
 // CommunityHandler 社区列表
 // @Summary 社区列表
@@ -31,16 +31,16 @@ func CommunityHandler(c *gin.Context) {
 	communityList, err := logic.GetCommunityList()
 	if err != nil {
 		zap.L().Error("logic.GetCommunityList() failed", zap.Error(err))
-		ResponseError(c, CodeServerBusy)	// 不轻易把服务端报错暴露给外面
+		ResponseError(c, CodeServerBusy) // 不轻易把服务端报错暴露给外面
 		return
 	}
 	ResponseSuccess(c, communityList)
 }
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 根据ID查找到社区分类的详情
- * @Date 17:01 2022/2/12
+ * @Date 17:01 2024/4/12
  **/
 // CommunityDetailHandler 社区详情
 // @Summary 社区详情
@@ -55,10 +55,10 @@ func CommunityHandler(c *gin.Context) {
 // @Router /community/:id [get]
 func CommunityDetailHandler(c *gin.Context) {
 	// 1、获取社区ID
-	communityIdStr := c.Param("id")	// 获取URL参数
-	communityId, err := strconv.ParseUint(communityIdStr,10,64) // id字符串格式转换
+	communityIdStr := c.Param("id")                               // 获取URL参数
+	communityId, err := strconv.ParseUint(communityIdStr, 10, 64) // id字符串格式转换
 	if err != nil {
-		ResponseError(c,CodeInvalidParams)
+		ResponseError(c, CodeInvalidParams)
 		return
 	}
 

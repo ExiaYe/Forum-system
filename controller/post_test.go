@@ -1,17 +1,22 @@
-/**
-    @author:Huchao
-    @data:2022/2/19
-    @note: post单元测试
-**/
+/*
+*
+
+	@author:ExiaYe
+	@data:2024/4/19
+	@note: post单元测试
+
+*
+*/
 package controller
 
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -39,7 +44,7 @@ func TestCreatePostHandler(t *testing.T) {
 
 	// 2.方法二：将响应的内容反序列化到ResponseData 然后判断字段与预期是否一致
 	res := new(ResponseData)
-	if err := json.Unmarshal(w.Body.Bytes(), res);err != nil {
+	if err := json.Unmarshal(w.Body.Bytes(), res); err != nil {
 		t.Fatalf("json.Unmarshal w.Body failed,err:%v\n", err)
 	}
 	assert.Equal(t, res.Code, CodeNotLogin)

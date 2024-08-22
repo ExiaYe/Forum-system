@@ -7,9 +7,9 @@ import (
 )
 
 /**
- * @Author huchao
+ * @Author ExiaYe
  * @Description //TODO 封装响应
- * @Date 22:11 2022/2/10
+ * @Date 22:11 2024/4/10
  * @Param
  * @return
  **/
@@ -17,7 +17,7 @@ import (
 type ResponseData struct {
 	Code    MyCode      `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`	// omitempty当data为空时,不展示这个字段
+	Data    interface{} `json:"data,omitempty"` // omitempty当data为空时,不展示这个字段
 }
 
 func ResponseError(ctx *gin.Context, c MyCode) {
